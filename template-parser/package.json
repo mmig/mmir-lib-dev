@@ -1,0 +1,17 @@
+{
+  "name": "mmir-template-parser",
+  "version": "1.0.0",
+  "description": "build mmir template parser from ANTLR sources",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "npm run compile && npm run timestamps && npm run copy",
+    "compile": "node index.js",
+    "timestamps": "node process-timestamps.js",
+    "copy": "node copy-compiled.js"
+  },
+  "author": "russa",
+  "license": "MIT"
+}

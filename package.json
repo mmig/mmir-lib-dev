@@ -1,0 +1,30 @@
+{
+  "name": "mmir-lib-dev",
+  "version": "1.0.0",
+  "description": "dev tools for mmir-lib",
+  "directories": {
+    "doc": "doc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmig/mmir-lib-dev/"
+  },
+  "keywords": [
+    "mmir",
+    "cordova"
+  ],
+  "author": "MMIG team",
+  "license": "MIT",
+  "devDependencies": {},
+  "peerDependencies": {
+    "mmir-lib": "git+https://gitlab-cos.b.dfki.de/mmir/dev_mmir-lib.git#develop/webpack"
+  },
+  "scripts": {
+    "build": "npm run compile-parser && npm run build-polyfill && npm run build-md5 && npm run build-scion && npm run build-modules",
+    "compile-parser": "cd template-parser && npm run build",
+    "build-polyfill": "cd conv-libs && cd build-es6-map-set && npm run build",
+    "build-md5": "cd conv-libs && cd crypto-js-md5 && npm run build",
+    "build-scion": "cd conv-libs && cd scion && npm run build",
+    "build-modules": "cd conv-libs && cd module-shims && npm run build"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "mmir-module-shims",
+  "version": "1.0.0",
+  "description": "process requirejs shim configurations",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "uglify-js": "^3.6.0"
+  },
+  "devDependencies": {
+    "esprima": "^4.0.1"
+  }
+}
