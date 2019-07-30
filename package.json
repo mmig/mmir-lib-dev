@@ -17,7 +17,7 @@
   "license": "MIT",
   "devDependencies": {},
   "peerDependencies": {
-    "mmir-lib": "git+https://gitlab-cos.b.dfki.de/mmir/dev_mmir-lib.git#develop/webpack"
+    "mmir-lib": "git+https://github.com/mmig/mmir-lib.git"
   },
   "scripts": {
     "build": "npm run compile-parser && npm run build-polyfill && npm run build-md5 && npm run build-scion && npm run build-modules",
