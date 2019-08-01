@@ -4,7 +4,12 @@
 	},
 	"source": {
 		"includePattern": ".+\\.js(doc)?$",
-		"excludePattern": "((^|\\/|\\\\)_)|((\\/|\\\\)vendor)"
+		"excludePattern": "((^|\\/|\\\\)_)|((^|\\/|\\\\)vendor)"
+	},
+	"opts": {
+		"recurse": true,
+		"private": true,
+		"verbose": true
 	},
 	"plugins": [
 		"./plugins/short-symbolic-links",

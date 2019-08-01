@@ -1,6 +1,6 @@
 {
   "name": "mmir-doc",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "API doc generation for the MMIR framework.",
   "keywords": [
     "documentation",
@@ -14,15 +14,19 @@
     "jaguarjs-jsdoc": "~1.1.0"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.6",
+    "@types/gulp-util": "^3.0.34",
     "del": "^5.0.0",
     "gulp": "^4.0.2",
-    "gulp-sequence": "^1.0.0",
+    "gulp-jsdoc3": "^2.0.0",
     "gulp-util": "^3.0.8",
     "jsdoc": "^3.6.3",
     "mmir-lib": "git+https://github.com/mmig/mmir-lib.git",
     "properties": "^1.2.1"
   },
   "scripts": {
-    "build": "gulp"
+    "build": "npm run update-mmir && npm run doc",
+    "doc": "gulp gen_jsdoc",
+    "update-mmir": "npm update mmir-lib"
   }
 }
