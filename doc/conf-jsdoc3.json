@@ -4,7 +4,7 @@
 	},
 	"source": {
 		"includePattern": ".+\\.js(doc)?$",
-		"excludePattern": "((^|\\/|\\\\)_)|((\\/|\\\\)node_modules)|((\\/|\\\\)vendor)"
+		"excludePattern": "((^|\\/|\\\\)_)|((\\/|\\\\)vendor)"
 	},
 	"plugins": [
 		"./plugins/short-symbolic-links",

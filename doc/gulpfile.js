@@ -1,16 +1,13 @@
 
 var path = require('path');
 var gulp = require('gulp');
-var gulpSequence = require('gulp-sequence');
 var gutil = require('gulp-util');
 var del = require('del');
 var exec = require('child_process').exec;
 var execFile = require('child_process').execFile;
 
-var libDir = '../lib/';
-
 var PROPERTIES_FILE = 'doc.properties';
-var propsLoader = require(libDir + 'nodejs-properties');
+var propsLoader = require('properties');
 
 var _properties;
 var loadProperties = function(cb){
@@ -50,14 +47,6 @@ var cleanJsDoc = function(callback, jsdocVer){
 	});
 	return gutil.noop();
 };
-
-gulp.task('default', ['jsdoc3']);
-
-gulp.task('jsdoc2', gulpSequence('clean_jsdoc2', 'gen_jsdoc2'));
-
-gulp.task('jsdoc3', gulpSequence('clean_jsdoc3', 'gen_jsdoc3'));
-
-gulp.task('depDoc', gulpSequence('clean_depDoc', 'gen_depDoc'));
 
 gulp.task('gen_jsdoc2', function(callback) {
 
@@ -104,13 +93,16 @@ gulp.task('gen_jsdoc3', function(callback) {
 
 		var args = [
 			settings['default.options.jsdoc.v3'],
-			'-c ' +settings['file.config.jsdoc.v3'],
-			'-d ' +settings['dir.out.jsdoc'] + '3',
-			'-t ' +settings['template.jsdoc.v3'],
-			settings['dir.src.in']
+			'-c ' + path.normalize(settings['file.config.jsdoc.v3']),
+			'-d ' + path.normalize(settings['dir.out.jsdoc'] + '3'),
+			'-t ' + path.normalize(settings['template.jsdoc.v3']),
+			'-R '  + path.normalize(settings['dir.src.in'] + '/../README.md'),
+			'-P '  + path.normalize(settings['dir.src.in'] + '/../package.json'),
+			path.normalize(settings['dir.src.in'])
 		];
 
 		var cmd = path.normalize(settings['exec.jsdoc.v3']) + ' ' + args.join(' ');
+		console.log('### '+cmd)
 		var child = exec(cmd, function(error, stdout, stderr){
 
 			console.error(stderr);
@@ -192,3 +184,12 @@ gulp.task('clean_depDoc', function(callback) {
 	});
 	return gutil.noop();
 });
+
+
+gulp.task('jsdoc2', gulp.series('clean_jsdoc2', 'gen_jsdoc2'));
+
+gulp.task('jsdoc3', gulp.series('clean_jsdoc3', 'gen_jsdoc3'));
+
+gulp.task('depDoc', gulp.series('clean_depDoc', 'gen_depDoc'));
+
+gulp.task('default', gulp.series('jsdoc3'));
