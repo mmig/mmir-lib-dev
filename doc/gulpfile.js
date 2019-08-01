@@ -37,10 +37,10 @@ var loadProperties = function(cb){
 	});
 };
 
-var cleanJsDoc = function(callback, jsdocVer){
+var cleanJsDoc = function(callback){
 	loadProperties(function(settings){
 
-		del([settings['dir.out.jsdoc'] + jsdocVer + '/**/*']);
+		del([settings['dir.out.jsdoc'] + '/**/*']);
 
 		callback();
 		return gutil.noop();
@@ -48,53 +48,14 @@ var cleanJsDoc = function(callback, jsdocVer){
 	return gutil.noop();
 };
 
-gulp.task('gen_jsdoc2', function(callback) {
-
-	loadProperties(function(settings){
-
-		var args = [
-			settings['exec.jsdoc.v2'],
-			settings['default.options.jsdoc.v2'],
-			'-E="' +settings['exclude.config.jsdoc.v3']+'"',
-			'-d=' +settings['dir.out.jsdoc'] + '2',
-			'-t=' +settings['template.jsdoc.v2'],
-			settings['dir.src.in']
-		];
-
-		var cmd = 'node '+args.join(' ');
-		console.log('run: '+cmd);
-		var child = exec(cmd , function(error, stdout, stderr){
-
-			console.error(stderr);
-			if (error) {
-				callback(error);
-				return gutil.noop();
-			}
-			// console.log(stdout);
-			console.log('### wrote jsdoc2 files to '+path.normalize(settings['dir.out.jsdoc'] + '2'));
-
-			callback();
-			return gutil.noop();
-		});
-
-		//print conosle-output immediately as a way of progress-feedback (since jsdoc2 may take some time to process the files)
-		child.stdout.on('data', function(data){
-			console.log('	 ' + data.replace(/\r?\n$/, ''));
-		});
-
-	});
-
-
-});
-
-gulp.task('gen_jsdoc3', function(callback) {
+gulp.task('gen_jsdoc', function(callback) {
 
 	loadProperties(function(settings){
 
 		var args = [
 			settings['default.options.jsdoc.v3'],
 			'-c ' + path.normalize(settings['file.config.jsdoc.v3']),
-			'-d ' + path.normalize(settings['dir.out.jsdoc'] + '3'),
+			'-d ' + path.normalize(settings['dir.out.jsdoc']),
 			'-t ' + path.normalize(settings['template.jsdoc.v3']),
 			'-R '  + path.normalize(settings['dir.src.in'] + '/../README.md'),
 			'-P '  + path.normalize(settings['dir.src.in'] + '/../package.json'),
@@ -111,7 +72,7 @@ gulp.task('gen_jsdoc3', function(callback) {
 				return gutil.noop();
 			}
 			// console.log(stdout);
-			console.log('### wrote jsdoc3 files to '+path.normalize(settings['dir.out.jsdoc'] + '3'));
+			console.log('### wrote jsdoc3 files to '+path.normalize(settings['dir.out.jsdoc']));
 
 			callback();
 			return gutil.noop();
@@ -121,7 +82,6 @@ gulp.task('gen_jsdoc3', function(callback) {
 		child.stdout.on('data', function(data){
 			console.log('	 ' + data.replace(/\r?\n$/, ''));
 		});
-
 
 	});
 
@@ -160,14 +120,9 @@ gulp.task('gen_depDoc', function(callback) {
 
 });
 
-gulp.task('clean_jsdoc2', function(callback) {
+gulp.task('clean_jsdoc', function(callback) {
 
-	cleanJsDoc(callback, 2);
-});
-
-gulp.task('clean_jsdoc3', function(callback) {
-
-	cleanJsDoc(callback, 3);
+	cleanJsDoc(callback);
 });
 
 gulp.task('clean_depDoc', function(callback) {
@@ -185,11 +140,8 @@ gulp.task('clean_depDoc', function(callback) {
 	return gutil.noop();
 });
 
-
-gulp.task('jsdoc2', gulp.series('clean_jsdoc2', 'gen_jsdoc2'));
-
-gulp.task('jsdoc3', gulp.series('clean_jsdoc3', 'gen_jsdoc3'));
+gulp.task('jsdoc', gulp.series('clean_jsdoc', 'gen_jsdoc'));
 
 gulp.task('depDoc', gulp.series('clean_depDoc', 'gen_depDoc'));
 
-gulp.task('default', gulp.series('jsdoc3'));
+gulp.task('default', gulp.series('jsdoc'));
