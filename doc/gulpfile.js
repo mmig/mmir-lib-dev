@@ -7,7 +7,8 @@ var jsdoc = require('gulp-jsdoc3');
 var del = require('del');
 var execFile = require('child_process').execFile;
 
-var outDir = './docs';
+var outDir = './api';
+var outAllDir = './api-all';
 var jaguarTemplateId = 'jaguarjs-jsdoc';
 var docstrapTemplateId = 'ink-docstrap';
 
@@ -61,18 +62,19 @@ var loadProperties = function(cb){
 var cleanJsDoc = function(callback){
 
 	var outPath = path.normalize(outDir);
-	del([outPath + '/**/*']);
+	var outAllPath = path.normalize(outAllDir);
+	del([outPath + '/**/*', outAllPath + '/**/*']);
 
 	callback();
 	return gutil.noop();
 };
 
-gulp.task('gen_jsdoc', function(callback) {
+var genJsDoc = function(includePrivate, callback) {
 
 	var config = JSON.parse(fs.readFileSync(path.resolve(__dirname+'/conf-jsdoc3.json')));
 
 	var srcPath = getMmirPath();
-	var outPath = path.resolve(outDir);
+	var outPath = includePrivate? path.resolve(outAllDir) : path.resolve(outDir);
 
 	var templateId = jaguarTemplateId;
 	var templatePath = getTemplatePath(templateId);
@@ -81,6 +83,7 @@ gulp.task('gen_jsdoc', function(callback) {
 	var packageJsonFile = path.resolve(srcPath + '/../package.json');
 
 	config.opts.destination = outPath;
+	config.opts.private = !!includePrivate;
 	config.opts.template = templatePath;
 	config.opts.readme = readmeFile;
 	config.opts.package = packageJsonFile;
@@ -88,7 +91,16 @@ gulp.task('gen_jsdoc', function(callback) {
 
 	gulp.src([srcPath+'/*.js', srcPath+'/!(vendor)/**/*.js'], {read: false})
         .pipe(jsdoc(config, callback));
+};
 
+gulp.task('gen_jsdoc', function(callback) {
+
+	genJsDoc(false, callback);
+});
+
+gulp.task('gen_jsdoc_private', function(callback) {
+
+	genJsDoc(true, callback);
 });
 
 gulp.task('gen_depDoc', function(callback) {
@@ -143,7 +155,7 @@ gulp.task('clean_depDoc', function(callback) {
 	return gutil.noop();
 });
 
-gulp.task('jsdoc', gulp.series('clean_jsdoc', 'gen_jsdoc'));
+gulp.task('jsdoc', gulp.series('clean_jsdoc', gulp.parallel(['gen_jsdoc', 'gen_jsdoc_private'])));
 
 gulp.task('depDoc', gulp.series('clean_depDoc', 'gen_depDoc'));
 

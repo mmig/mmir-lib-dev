@@ -8,7 +8,7 @@
 	},
 	"opts": {
 		"recurse": true,
-		"private": true,
+		"private": false,
 		"verbose": true
 	},
 	"plugins": [
