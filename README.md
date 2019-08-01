@@ -20,21 +20,21 @@ custom-built libraries for use in `mmir`.
 
 modified libraries
 
- * RequireJS 2.3.6
+ * RequireJS 2.3.6  
    (BSD or MIT; Copyright jQuery Foundation and other contributors)
- * SCION v1, @scion-scxml/core v2.6.22 (custom build)
+ * SCION v1, @scion-scxml/core v2.6.22 (custom build)  
    (LGPLv3, Apache License v2.0; Copyright 2018 Jacobean Research and Development, LLC)
- * JS/CC 0.30
+ * JS/CC 0.30  
    (BSD; Copyright © 2007-2016 by Phorward Software Technologies; Jan Max Meyer; Brobston Development, Inc.; and other contributors)
- * PEG.js 0.10.0
+ * PEG.js 0.10.0  
    (MIT; Copyright (c) 2010-2016 David Majda, Copyright (c) 2017+ Futago-za Ryuu)
- * Jison 0.4.15
+ * Jison 0.4.15  
    (MIT; Copyright (c) 2009-2014 Zachary Carter)
- * ANTLR 3
+ * ANTLR 3  
    (BSD; Copyright (c) 2013 Terence Parr)
- * crypto-js MD5 3.1.9-1 (custom build)
+ * crypto-js MD5 3.1.9-1 (custom build)  
    (MIT; Copyright (c) 2009-2013 Jeff Mott, Copyright (c) 2013-2016 Evan Vosberg)
- * stacktrace-js 2.0.0
+ * stacktrace-js 2.0.0  
    (MIT; Copyright (c) 2017 Eric Wendelin and other contributors)
 
 [1]: https://github.com/mmig/mmir-tooling
