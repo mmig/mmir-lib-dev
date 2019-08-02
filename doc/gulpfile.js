@@ -7,7 +7,6 @@ var gutil = require('gulp-util');
 var jsdoc = require('gulp-jsdoc3');
 var typedoc = require("gulp-typedoc");
 var del = require('del');
-var execFile = require('child_process').execFile;
 
 var outDir = './api';
 var outAllDir = './api-all';
@@ -15,6 +14,9 @@ var jaguarTemplateId = 'jaguarjs-jsdoc';
 // var docstrapTemplateId = 'ink-docstrap';
 
 var tsdocOutDir = './api-ts';
+
+tempDepConfigFile='./temp/dep-config.js';
+depOutFile='./api-mmirf-dependencies.html'
 
 var getMmirPath = function(){
 	return path.dirname(require.resolve('mmir-lib'));
@@ -35,37 +37,6 @@ var getTemplatePath = function(templateId){
 var getJsonConfig = function(fileName) {
 	return JSON.parse(fs.readFileSync(path.resolve(__dirname+'/'+fileName)));
 }
-
-var PROPERTIES_FILE = 'doc.properties';
-var propsLoader = require('properties');
-
-var _properties;
-var loadProperties = function(cb){
-
-	if(_properties){
-		return cb(_properties);
-	}
-
-	var config = {};
-
-	propsLoader.parse(PROPERTIES_FILE, {path: true, variables: true}, function(error, docConfig){
-
-		if(error){
-			throw error;
-		}
-
-		if(docConfig) for(var name in docConfig){
-
-			if(docConfig.hasOwnProperty(name)){
-				// console.log('apply setting '+name+':'+docConfig[name])
-				config[name] = docConfig[name];
-			}
-		}
-
-		_properties = config;
-		cb(config);
-	});
-};
 
 var cleanJsDoc = function(callback){
 
@@ -126,34 +97,11 @@ gulp.task('gen_typedoc', function() {
 
 gulp.task('gen_depDoc', function(callback) {
 
-	loadProperties(function(settings){
-
-		var basePath = path.dirname(require.resolve('mmir-lib'));
-
-		var args = [
-			settings['dep.doc.generator.script'],
-			basePath,
-			settings['dep.doc.temp.config.file'],
-			settings['dep.doc.output.file']
-		];
-
-		var cwd = path.normalize(settings['dep.doc.working.dir']);
-		execFile('node', args, {cwd: cwd} , function(error, stdout, stderr){
-
-			console.error(stderr);
-			if (error) {
-				callback(error);
-				return gutil.noop();
-			}
-			console.log(stdout);
-			console.log('### created dependency graph visualisation at '+path.normalize(settings['dep.doc.working.dir']+settings['dep.doc.output.file']));
-
-			callback();
-			return gutil.noop();
-		});
-
-	});
-
+	setTimeout(function(){
+		require('./dep-create-graph').create(depOutFile, tempDepConfigFile);
+		callback();
+	}, 0);
+	return gutil.noop();
 
 });
 
@@ -173,16 +121,9 @@ gulp.task('clean_typedoc', function(callback) {
 
 gulp.task('clean_depDoc', function(callback) {
 
-	loadProperties(function(settings){
+	del([tempDepConfigFile, depOutFile]);
 
-		del([
-			 settings['dep.doc.temp.config.file'],
-			 settings['dep.doc.working.dir'] + settings['dep.doc.output.file']
-		]);
-
-		callback();
-		return gutil.noop();
-	});
+	callback();
 	return gutil.noop();
 });
 
