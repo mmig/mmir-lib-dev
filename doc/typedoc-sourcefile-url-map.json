@@ -8,7 +8,7 @@
     "replace": "https://github.com/mmig/mmir-tooling/tree/master/"
   },
 	{
-    "pattern": "^",
+    "pattern": "^node_modules/mmir-webpack/",
     "replace": "https://github.com/mmig/mmir-webpack/tree/master/"
   }
 ]
