@@ -128,10 +128,11 @@ gulp.task('gen_depDoc', function(callback) {
 
 	loadProperties(function(settings){
 
+		var basePath = path.dirname(require.resolve('mmir-lib'));
+
 		var args = [
 			settings['dep.doc.generator.script'],
-			settings['dep.doc.mmirf.base.dir'],
-			settings['dep.doc.target.dir'],
+			basePath,
 			settings['dep.doc.temp.config.file'],
 			settings['dep.doc.output.file']
 		];
@@ -175,8 +176,8 @@ gulp.task('clean_depDoc', function(callback) {
 	loadProperties(function(settings){
 
 		del([
-			 settings['dep.doc.working.dir'] + settings['dep.doc.temp.config.file'] + '/**/*',
-			 settings['dep.doc.working.dir'] + settings['dep.doc.output.file'] + '/**/*'
+			 settings['dep.doc.temp.config.file'],
+			 settings['dep.doc.working.dir'] + settings['dep.doc.output.file']
 		]);
 
 		callback();

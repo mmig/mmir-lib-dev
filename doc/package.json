@@ -8,8 +8,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "dependo": "~0.2.0",
-    "esprima": "~2.7.2"
+    "dependo": "~0.2.0"
   },
   "devDependencies": {
     "@types/gulp": "^4.0.6",
