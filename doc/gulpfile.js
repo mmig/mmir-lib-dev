@@ -134,4 +134,4 @@ gulp.task('typedoc', gulp.series('clean_typedoc', 'gen_typedoc'));
 
 gulp.task('depsgraph', gulp.series('clean_depsgraph', 'gen_depsgraph'));
 
-gulp.task('default', gulp.series('jsdoc'));
+gulp.task('default', gulp.parallel(['jsdoc', 'typedoc', 'depsgraph']));

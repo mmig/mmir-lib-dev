@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "npm run update-mmir && npm run doc",
-    "doc": "gulp jsdoc",
-    "update-mmir": "npm update mmir-lib"
+    "doc": "gulp",
+    "update-mmir": "npm update mmir-lib mmir-tooling mmir-webpack"
   }
 }
