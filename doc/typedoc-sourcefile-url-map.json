@@ -1,0 +1,14 @@
+[
+  {
+    "pattern": "^node_modules/mmir-lib/",
+    "replace": "https://github.com/mmig/mmir-lib/tree/master/"
+  },
+	{
+    "pattern": "^node_modules/mmir-tooling/",
+    "replace": "https://github.com/mmig/mmir-tooling/tree/master/"
+  },
+	{
+    "pattern": "^",
+    "replace": "https://github.com/mmig/mmir-webpack/tree/master/"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "includeDeclarations": true,
+  "excludeExternals": false,
+  "exclude": ["node_modules/!(mmir-)*/**"],
+  "excludePrivate": true,
+  "readme": "none",
+	"mode": "modules",
+  "theme": "default",
+  "listInvalidSymbolLinks": true,
+  "ignoreCompilerErrors": true,
+	"sourcefile-url-map": "typedoc-sourcefile-url-map.json",
+  "moduleResolution": "node"
+}

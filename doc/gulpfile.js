@@ -1,16 +1,20 @@
+/// <reference path="./types.d.ts" />
 
 var path = require('path');
 var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var jsdoc = require('gulp-jsdoc3');
+var typedoc = require("gulp-typedoc");
 var del = require('del');
 var execFile = require('child_process').execFile;
 
 var outDir = './api';
 var outAllDir = './api-all';
 var jaguarTemplateId = 'jaguarjs-jsdoc';
-var docstrapTemplateId = 'ink-docstrap';
+// var docstrapTemplateId = 'ink-docstrap';
+
+var tsdocOutDir = './api-ts';
 
 var getMmirPath = function(){
 	return path.dirname(require.resolve('mmir-lib'));
@@ -27,6 +31,10 @@ var getTemplatePath = function(templateId){
 		return pkgPath;
 	}
 };
+
+var getJsonConfig = function(fileName) {
+	return JSON.parse(fs.readFileSync(path.resolve(__dirname+'/'+fileName)));
+}
 
 var PROPERTIES_FILE = 'doc.properties';
 var propsLoader = require('properties');
@@ -71,7 +79,7 @@ var cleanJsDoc = function(callback){
 
 var genJsDoc = function(includePrivate, callback) {
 
-	var config = JSON.parse(fs.readFileSync(path.resolve(__dirname+'/conf-jsdoc3.json')));
+	var config = getJsonConfig('conf-jsdoc3.json');
 
 	var srcPath = getMmirPath();
 	var outPath = includePrivate? path.resolve(outAllDir) : path.resolve(outDir);
@@ -102,6 +110,19 @@ gulp.task('gen_jsdoc_private', function(callback) {
 
 	genJsDoc(true, callback);
 });
+
+gulp.task('gen_typedoc', function() {
+
+	var config = getJsonConfig('typedoc.json');
+
+	config.out = path.normalize(tsdocOutDir);
+	config.name = 'mmir Tools and Plugins';
+
+	return gulp
+			.src(['node_modules/mmir-*/**/*.ts'])
+			.pipe(typedoc(config));
+});
+
 
 gulp.task('gen_depDoc', function(callback) {
 
@@ -140,6 +161,15 @@ gulp.task('clean_jsdoc', function(callback) {
 	cleanJsDoc(callback);
 });
 
+gulp.task('clean_typedoc', function(callback) {
+
+	var outPath = path.normalize(tsdocOutDir);
+	del([outPath + '/**/*']);
+
+	callback();
+	return gutil.noop();
+});
+
 gulp.task('clean_depDoc', function(callback) {
 
 	loadProperties(function(settings){
@@ -156,6 +186,8 @@ gulp.task('clean_depDoc', function(callback) {
 });
 
 gulp.task('jsdoc', gulp.series('clean_jsdoc', gulp.parallel(['gen_jsdoc', 'gen_jsdoc_private'])));
+
+gulp.task('typedoc', gulp.series('clean_typedoc', 'gen_typedoc'));
 
 gulp.task('depDoc', gulp.series('clean_depDoc', 'gen_depDoc'));
 
