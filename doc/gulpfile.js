@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var jsdoc = require('gulp-jsdoc3');
 var typedoc = require("gulp-typedoc");
 var del = require('del');
+var genDepsGraph = require('./dep-create-graph');
 
 var outDir = './api';
 var outAllDir = './api-all';
@@ -15,7 +16,7 @@ var jaguarTemplateId = 'jaguarjs-jsdoc';
 var tsdocOutDir = './api-ts';
 
 tempDepConfigFile='./temp/dep-config.js';
-depOutFile='./api-mmirf-dependencies.html'
+depOutFile='./api-deps-graph/api-mmirf-dependencies.html'
 
 var getMmirPath = function(){
 	return path.dirname(require.resolve('mmir-lib'));
@@ -93,14 +94,14 @@ gulp.task('gen_typedoc', function() {
 });
 
 
-gulp.task('gen_depDoc', function(callback) {
+gulp.task('gen_depsgraph', function(callback) {
 
 	Promise.all([
 		fs.ensureDir(path.dirname(depOutFile)),
 		fs.ensureDir(path.dirname(tempDepConfigFile))
 	]).then(function(){
 		//TODO convert this to proper gulp task/plugin -> glup.src(..).pipe(createDepsGraph()).out(..)
-		require('./dep-create-graph').create(depOutFile, tempDepConfigFile);
+		genDepsGraph.create(depOutFile, tempDepConfigFile);
 		callback();
 	});
 
@@ -119,7 +120,7 @@ gulp.task('clean_typedoc', function(callback) {
 	});
 });
 
-gulp.task('clean_depDoc', function(callback) {
+gulp.task('clean_depsgraph', function(callback) {
 
 	del([tempDepConfigFile, depOutFile]).then(function(){
 		callback();
@@ -131,6 +132,6 @@ gulp.task('jsdoc', gulp.series('clean_jsdoc', gulp.parallel(['gen_jsdoc', 'gen_j
 
 gulp.task('typedoc', gulp.series('clean_typedoc', 'gen_typedoc'));
 
-gulp.task('depDoc', gulp.series('clean_depDoc', 'gen_depDoc'));
+gulp.task('depsgraph', gulp.series('clean_depsgraph', 'gen_depsgraph'));
 
 gulp.task('default', gulp.series('jsdoc'));
