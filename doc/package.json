@@ -17,7 +17,7 @@
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^2.0.0",
     "gulp-typedoc": "^2.2.2",
-    "jaguarjs-jsdoc": "~1.1.0",
+    "jaguarjs-jsdoc": "git+https://github.com/mmig/jaguarjs-jsdoc.git#patched",
     "jsdoc": "^3.6.3",
     "mmir-lib": "git+https://github.com/mmig/mmir-lib.git",
     "mmir-tooling": "git+https://github.com/mmig/mmir-tooling.git",
@@ -30,5 +30,6 @@
     "build": "npm run update-mmir && npm run doc",
     "doc": "gulp",
     "update-mmir": "npm update mmir-lib mmir-tooling mmir-webpack"
-  }
+  },
+  "dependencies": {}
 }

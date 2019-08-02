@@ -21,7 +21,9 @@
 		"cleverLinks": true,
 		"monospaceLinks": true,
 		"default": {
-			"outputSourceFiles": true
+			"outputSourceFiles": true,
+			"includeDate": false,
+			"displayNavLong": true
 		},
 		"navType ": "inline",
 		"linenums": true,

@@ -35,7 +35,7 @@ var getTemplatePath = function(templateId){
 };
 
 var getJsonConfig = function(fileName) {
-	return JSON.parse(fs.readFileSync(path.resolve(__dirname+'/'+fileName)));
+	return JSON.parse(fs.readFileSync(path.isAbsolute(fileName)? fileName : path.resolve(__dirname+'/'+fileName)));
 }
 
 var cleanJsDoc = function(callback){
@@ -60,12 +60,16 @@ var genJsDoc = function(includePrivate, callback) {
 	var readmeFile = path.resolve(srcPath + '/../README.md');
 	var packageJsonFile = path.resolve(srcPath + '/../package.json');
 
+	var pkgInfo = getJsonConfig(packageJsonFile);
+
 	config.opts.destination = outPath;
 	config.opts.private = !!includePrivate;
 	config.opts.template = templatePath;
 	config.opts.readme = readmeFile;
 	config.opts.package = packageJsonFile;
 
+	config.templates.openGraph.title += ' ' + pkgInfo.version;
+	config.templates.meta.title += ' ' + pkgInfo.version;
 
 	gulp.src([srcPath+'/*.js', srcPath+'/!(vendor)/**/*.js'], {read: false})
         .pipe(jsdoc(config, callback));
