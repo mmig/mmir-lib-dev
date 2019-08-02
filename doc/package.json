@@ -12,13 +12,11 @@
   },
   "devDependencies": {
     "@types/gulp": "^4.0.6",
-    "@types/gulp-util": "^3.0.34",
     "@types/webpack": "^4.32.1",
     "del": "^5.0.0",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^2.0.0",
     "gulp-typedoc": "^2.2.2",
-    "gulp-util": "^3.0.8",
     "jaguarjs-jsdoc": "~1.1.0",
     "jsdoc": "^3.6.3",
     "mmir-lib": "git+https://github.com/mmig/mmir-lib.git",

@@ -3,7 +3,6 @@
 var path = require('path');
 var fs = require('fs');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var jsdoc = require('gulp-jsdoc3');
 var typedoc = require("gulp-typedoc");
 var del = require('del');
@@ -45,7 +44,6 @@ var cleanJsDoc = function(callback){
 	del([outPath + '/**/*', outAllPath + '/**/*']);
 
 	callback();
-	return gutil.noop();
 };
 
 var genJsDoc = function(includePrivate, callback) {
@@ -101,7 +99,6 @@ gulp.task('gen_depDoc', function(callback) {
 		require('./dep-create-graph').create(depOutFile, tempDepConfigFile);
 		callback();
 	}, 0);
-	return gutil.noop();
 
 });
 
@@ -116,7 +113,6 @@ gulp.task('clean_typedoc', function(callback) {
 	del([outPath + '/**/*']);
 
 	callback();
-	return gutil.noop();
 });
 
 gulp.task('clean_depDoc', function(callback) {
@@ -124,7 +120,6 @@ gulp.task('clean_depDoc', function(callback) {
 	del([tempDepConfigFile, depOutFile]);
 
 	callback();
-	return gutil.noop();
 });
 
 gulp.task('jsdoc', gulp.series('clean_jsdoc', gulp.parallel(['gen_jsdoc', 'gen_jsdoc_private'])));
