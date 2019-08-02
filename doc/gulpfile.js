@@ -1,7 +1,7 @@
 /// <reference path="./types.d.ts" />
 
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs-extra');
 var gulp = require('gulp');
 var jsdoc = require('gulp-jsdoc3');
 var typedoc = require("gulp-typedoc");
@@ -41,9 +41,9 @@ var cleanJsDoc = function(callback){
 
 	var outPath = path.normalize(outDir);
 	var outAllPath = path.normalize(outAllDir);
-	del([outPath + '/**/*', outAllPath + '/**/*']);
-
-	callback();
+	del([outPath + '/**/*', outAllPath + '/**/*']).then(function(){
+		callback();
+	});
 };
 
 var genJsDoc = function(includePrivate, callback) {
@@ -95,10 +95,14 @@ gulp.task('gen_typedoc', function() {
 
 gulp.task('gen_depDoc', function(callback) {
 
-	setTimeout(function(){
+	Promise.all([
+		fs.ensureDir(path.dirname(depOutFile)),
+		fs.ensureDir(path.dirname(tempDepConfigFile))
+	]).then(function(){
+		//TODO convert this to proper gulp task/plugin -> glup.src(..).pipe(createDepsGraph()).out(..)
 		require('./dep-create-graph').create(depOutFile, tempDepConfigFile);
 		callback();
-	}, 0);
+	});
 
 });
 
@@ -110,16 +114,17 @@ gulp.task('clean_jsdoc', function(callback) {
 gulp.task('clean_typedoc', function(callback) {
 
 	var outPath = path.normalize(tsdocOutDir);
-	del([outPath + '/**/*']);
-
-	callback();
+	del([outPath + '/**/*']).then(function(){
+		callback();
+	});
 });
 
 gulp.task('clean_depDoc', function(callback) {
 
-	del([tempDepConfigFile, depOutFile]);
+	del([tempDepConfigFile, depOutFile]).then(function(){
+		callback();
+	});
 
-	callback();
 });
 
 gulp.task('jsdoc', gulp.series('clean_jsdoc', gulp.parallel(['gen_jsdoc', 'gen_jsdoc_private'])));

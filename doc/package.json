@@ -7,13 +7,13 @@
     "mmir"
   ],
   "license": "MIT",
-  "dependencies": {
-    "dependo": "~0.2.0"
-  },
   "devDependencies": {
+    "@types/fs-extra": "^8.0.0",
     "@types/gulp": "^4.0.6",
     "@types/webpack": "^4.32.1",
     "del": "^5.0.0",
+    "dependo": "^0.2.0",
+    "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^2.0.0",
     "gulp-typedoc": "^2.2.2",
