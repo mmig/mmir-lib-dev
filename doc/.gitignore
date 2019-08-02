@@ -1,5 +1,6 @@
 /api
 /api-all
 /api-ts
+/api-deps-graph
 /node_modules
 /temp
