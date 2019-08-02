@@ -26,7 +26,7 @@
 		"navType ": "inline",
 		"linenums": true,
 		"theme": "cerulean",
-		"copyright": "<a href='https://github.com/mmig/mmir'>MMIR Framework</a>, MIT License, Copyright (C) DFKI GmbH, IUI Berlin, www.dfki.de",
+		"copyright": "<a href='https://github.com/mmig/mmir'>MMIR Framework</a>, MIT License, Copyright (C) DFKI GmbH, COS Berlin, www.dfki.de",
 
 		"applicationName": "MMIR Framework",
 		"disqus": "",
