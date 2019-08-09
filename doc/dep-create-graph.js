@@ -162,17 +162,21 @@ function createDepsHtmlFile(outputPath, configPath, baseUrl, depOptions){
   options.requireConfig = configPath;
   options.onParseFile = fixImportScript;
 
-  var dependo;
   try {
-
-  	dependo = new Dependo(targetPath, options);
-
-  	var html = dependo.generateHtml();
-
+  	var html = new Dependo(targetPath, options).generateHtml();
   	//console.log(html);
 
   	fs.writeFileSync(outputPath, html, 'utf8');
   	console.log('created file', path.resolve(outputPath));
+
+    //DISABLED reverse option does not seem to have any effect!
+    // options.reverse = !options.reverse;
+    // var html2 = new Dependo(targetPath, options).generateHtml();
+    // var ext = path.extname(outputPath);
+    // var outputPath2 = path.normalize(path.dirname(outputPath) + '/' + path.basename(outputPath, ext) + 'Reverse' + ext);
+    //
+  	// fs.writeFileSync(outputPath2, html2, 'utf8');
+  	// console.log('created file', path.resolve(outputPath2));
 
   } catch(err){
   	console.error(err.message + ', line '+ err.line + ', col '+ err.col + ', pos '+ err.pos + '\n\t' + err.stack + '\n', err);
