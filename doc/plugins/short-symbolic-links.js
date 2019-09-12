@@ -1,33 +1,31 @@
 /**
-* 
+*
 * Transforms '{@link #x}' to '{@link longname#x x}'.
-* 
+*
 * Allow using shortened links for references within
 * the same context.
-* 
+*
 *
 * This looks in @description (and @param's description) and @classdesc tags only.
-* In addition, @see tags and @fires (and type of @param) are either processed as 
+* In addition, @see tags and @fires (and type of @param) are either processed as
 * "single links" (i.e. '#x', '.x', or '~x') or as
 * "description text" (i.e. containing {@link #x}).
-* 
+*
 * original idea / code base from: https://gist.github.com/pnstickne/fb90239787bd74ca5753
 */
 
-var path = require('path');
-
 function expandLinks (text, scope) {
-	
+
 	if(typeof text !== 'string'){
 		return text;
 	}
 
 	var isModified = false;
-	var returnValue = text.replace(/\{\s*@link\s+([#.~])([\w$:]+)\s*\}/g, function (m, mod, name) {
+	var returnValue = text.replace(/\{\s*@link\s+([#.~])([\w$:]+)\s*\}/g, function (_m, mod, name) {
 		isModified = true;
         return "{@link " + scope + mod + name + "|" + name + "}";
     });
-	
+
 	if(isModified){
 		return returnValue;
 	}
@@ -35,7 +33,7 @@ function expandLinks (text, scope) {
 }
 
 function expandSeeTagPath(text, scope) {
-	
+
 	if(typeof text !== 'string'){
 		return text;
 	}
@@ -44,21 +42,21 @@ function expandSeeTagPath(text, scope) {
 	if(/\{\s*@link\s+\S+\s*\}/g.test(text)){
 		return;
 	}
-	
+
 	var isModified = false;
-	
+
 	//expand:
 	// #some
 	// .some
 	// ~some
-	var returnValue = text.replace(/(^|\s)([#.~])([\w$:]+)($|\s)/g, function (m, s1, mod, name, s2) {
+	var returnValue = text.replace(/(^|\s)([#.~])([\w$:]+)($|\s)/g, function (_m, _s1, mod, name, _s2) {
 		isModified = true;
 //		//return "plain" expanded path:
 //        return s1 + scope + mod + name + s2;
 		//"pretty print": return path a link-tag, where the label is set to the original name:
 		return "{@link " + scope + mod + name + "|" + name + "}";
     });
-	
+
 	if(isModified){
 		return returnValue;
 	}
@@ -78,7 +76,7 @@ function getScope(doclet){
 // (doclet, p, scope) where p is index/name of target in doclet
 // (text, scope)
 function processDescriptionText(doclet, p, scope){
-	
+
 	var t;
 	if(typeof doclet === 'string'){
 		t = doclet;
@@ -87,7 +85,7 @@ function processDescriptionText(doclet, p, scope){
 	} else {
 		t = doclet[p];
 	}
-	
+
 	var isModified = false;
 	var modText;
 	if (t) {
@@ -108,7 +106,7 @@ function processLineTag(tagName, doclet, scope, preprocFunc){
 	var modText, ts, text;
 	var t = doclet[tagName];
 	if (t) {
-		
+
 		if(typeof t !== 'string'){
 			if(Array.isArray(t)){
 				ts = t;
@@ -120,13 +118,13 @@ function processLineTag(tagName, doclet, scope, preprocFunc){
 		else {
 			ts = [t];
 		}
-		
+
 		if(!ts || ts.length < 1){
 			return; /////////// EARLY EXIT ////////////
 		}
-		
+
 		doclet[tagName] = ts;
-		
+
 		for(var i=0,size=ts.length; i < size; ++i){
 			text = preprocFunc? preprocFunc(ts[i]) : ts[i];
 			if( ! processDescriptionText(text, scope)){
@@ -140,25 +138,24 @@ function processLineTag(tagName, doclet, scope, preprocFunc){
 }
 
 function processParamsTag(params, scope){
-	
+
 //	params: Array of
 //	  {
 //        "type": { "names": [ STRING ] },
 //        "description": STRING
 //        "name": STRING
 //    }
-	
+
 	var param, modText, j, len, types;
-	var t = params;
 	if (params && params.length > 0) {
-			
+
 		for(var i=0,size=params.length; i < size; ++i){
-			
+
 			param = params[i];
-			
+
 			//1. description
 			processDescriptionText(param, 'description', scope);
-			
+
 			//2. type
 			if(param.type && param.type.names){
 				types = param.type.names;
@@ -181,12 +178,11 @@ exports.handlers.newDoclet = function (e) {
 	if(!scope){
 		return; /////////// EARLY EXIT ////////////////
 	}
-	
-	var modText, t, ts;
+
 	processDescriptionText(doclet, 'description', scope);
 	processDescriptionText(doclet, 'classdesc', scope);
 	processDescriptionText(doclet, 'deprecated', scope);
-	
+
 	//process line-tags with links (e.g. see, fire, ...):
 	// * process Array of Strings
 	// * process either as comment text (i.e. text with {@link} elements
@@ -198,10 +194,10 @@ exports.handlers.newDoclet = function (e) {
 		}
 		return text;
 	});
-	
+
 	//process params
 	processParamsTag(doclet.params, scope);
-	
+
 	//original impl.:
     // ['description', 'classdesc', 'see'].forEach(function (p) {
         // if (doclet[p]) {

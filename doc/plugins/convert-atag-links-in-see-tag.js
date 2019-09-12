@@ -1,13 +1,12 @@
 /**
-* Transform '@see <a href="the/url">some text</a>' to '@see {@link the/url|some text}'.
-* 
-* Allow using HTML anchor tags within @see tags.
-* 
-*
-* This only looks into @see tags.
-*/
-
-var path = require('path');
+ * Transform '@see <a href="the/url">some text</a>' to '@see {@link the/url|some text}'.
+ *
+ * Allow using HTML anchor tags within @see tags.
+ *
+ *
+ *
+ * This only looks into @see tags.
+ */
 
 function convertATags (text) {
 
@@ -15,9 +14,9 @@ function convertATags (text) {
 	if( ! /<a[^>]+>(.*?)<\/a>/igm.test(text)){
 		return; //////////////// EARLY EXIT ////////////
 	}
-	
+
 	var isModified = false;
-	var returnValue = text.replace(/<a[^>]+href\s*=\s*('((\\'|[^'])+)'|"((\\"|[^"])+)")[^>]*>(.*?)<\/a>/igm,function(m, str1, url1, str2, url2, rest, title){
+	var returnValue = text.replace(/<a[^>]+href\s*=\s*('((\\'|[^'])+)'|"((\\"|[^"])+)")[^>]*>(.*?)<\/a>/igm,function(_m, _str1, url1, _str2, url2, _rest, title){
 		var url = url1? url1 : url2;
 		if(url){
 			isModified = true;
@@ -25,7 +24,7 @@ function convertATags (text) {
 			return "{@link " + url + "|" + title + "}";
 		}
     });
-	
+
 	if(isModified){
 		return returnValue;
 	}
@@ -53,7 +52,7 @@ exports.handlers.newDoclet = function (e) {
 	// * process <a> tags in text-@see tags
 	t = doclet['see'];
 	if (t) {
-		
+
 		if(typeof t !== 'string'){
 			if(Array.isArray(t)){
 				ts = t;
@@ -65,17 +64,17 @@ exports.handlers.newDoclet = function (e) {
 		else {
 			ts = [t];
 		}
-		
+
 		if(!ts || ts.length < 1){
 			return; /////////// EARLY EXIT ////////////
 		}
-		
+
 		doclet['see'] = ts;
-		
+
 		for(var i=0,size=ts.length; i < size; ++i){
 			processSeeText(ts, i);
 		}
-		
+
 	}
 
 };
