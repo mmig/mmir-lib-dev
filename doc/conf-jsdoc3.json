@@ -15,7 +15,8 @@
 		"./plugins/short-symbolic-links",
 		"./plugins/convert-atag-links-in-see-tag",
 		"./plugins/copydoc-tag-def",
-		"./plugins/copydoc-process"
+		"./plugins/copydoc-process",
+		"./plugins/link-builtin-to-mdn"
 	],
 	"templates": {
 		"cleverLinks": true,
