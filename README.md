@@ -1,5 +1,8 @@
-# mmir-lib-dev
+[mmir-lib-dev][0]
 ============
+
+[![MIT license](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/mmig/mmir-lib-dev/master)](https://github.com/mmig/mmir-lib-dev)
 
 Development resources for [mmir-lib][2] and [mmir-tooling][1].
 
@@ -37,5 +40,6 @@ modified libraries
  * stacktrace-js 2.0.0  
    (MIT; Copyright (c) 2017 Eric Wendelin and other contributors)
 
+[0]: https://github.com/mmig/mmir-lib-dev
 [1]: https://github.com/mmig/mmir-tooling
 [2]: https://github.com/mmig/mmir-lib
