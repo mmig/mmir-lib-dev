@@ -71,8 +71,14 @@ var genJsDoc = function(includePrivate, callback) {
 	config.templates.openGraph.title += ' ' + pkgInfo.version;
 	config.templates.meta.title += ' ' + pkgInfo.version;
 
-	gulp.src([srcPath+'/*.js', srcPath+'/!(vendor)/**/*.js'], {read: false})
-        .pipe(jsdoc(config, callback));
+	var fileSubPattern = '*.js';
+	if(!includePrivate){
+		//exclude *Compatibility modules from non-private API:
+		fileSubPattern = '!(*Compatibility)' + fileSubPattern;
+	}
+
+	gulp.src([srcPath+'/*.js', srcPath+'/!(vendor)/**/'+fileSubPattern], {read: false})
+				.pipe(jsdoc(config, callback));
 };
 
 gulp.task('gen_jsdoc', function(callback) {
