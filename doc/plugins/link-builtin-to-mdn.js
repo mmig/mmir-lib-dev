@@ -17,6 +17,18 @@ var links = {
   Error:    '<g>/Error',
   Object:   '<g>/Object',
   Promise:  '<g>/Promise',
+  TypedArray: '<g>/TypedArray',
+  Int8Array: '<g>/Int8Array',
+  Uint8Array: '<g>/Uint8Array',
+  Uint8ClampedArray: '<g>/Uint8ClampedArray',
+  Int16Array: '<g>/Int16Array',
+  Uint16Array: '<g>/Uint16Array',
+  Int32Array: '<g>/Int32Array',
+  Uint32Array: '<g>/Uint32Array',
+  Float32Array: '<g>/Float32Array',
+  Float64Array: '<g>/Float64Array',
+  BigInt64Array: '<g>/BigInt64Array',
+  BigUint64Array: '<g>/BigUint64Array',
   // API references:
   ProgressEvent:  '<a>/ProgressEvent',
   XMLHttpRequest: '<a>/XMLHttpRequest'
