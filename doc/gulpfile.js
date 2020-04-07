@@ -2,6 +2,7 @@
 
 var path = require('path');
 var fs = require('fs-extra');
+var tmp = require('tmp');
 var gulp = require('gulp');
 var jsdoc = require('gulp-jsdoc3');
 var typedoc = require("gulp-typedoc");
@@ -15,8 +16,11 @@ var jaguarTemplateId = 'jaguarjs-jsdoc';
 
 var tsdocOutDir = './api-ts';
 
-tempDepConfigFile='./temp/dep-config.js';
-depOutFile='./api-deps-graph/api-mmirf-dependencies.html'
+var tempDepConfigFile='./temp/dep-config.js';
+var depOutFile='./api-deps-graph/api-mmirf-dependencies.html';
+
+var typeDocsUrlMappingsPath = 'typedoc-sourcefile-url-map.json';
+var isMapTypeDocsToVersionTag = true;
 
 var getMmirPath = function(){
 	return path.dirname(require.resolve('mmir-lib'));
@@ -37,6 +41,38 @@ var getTemplatePath = function(templateId){
 var getJsonConfig = function(fileName) {
 	return JSON.parse(fs.readFileSync(path.isAbsolute(fileName)? fileName : path.resolve(__dirname+'/'+fileName)));
 }
+
+var createTempFile = function(content){
+	//NOTE must create relative to project, since typedoc plugin will resolve to project dir even if path is absolute
+	var f = tmp.fileSync({dir: __dirname});
+	fs.writeFileSync(f.name, content, 'utf8');
+	return path.relative(__dirname, f.name);
+}
+
+var prepareTypeDocUrlMapping = function(config, version){
+
+	var mappingsPath = typeDocsUrlMappingsPath;
+
+	if(isMapTypeDocsToVersionTag){
+		// -> map to version-tag URL instead of master branch:
+		//    for this to work:
+		//      1. the git repository must have a tag that equals the version-number!
+		//      2. all repositories have the same version number! TODO change this?
+		var mapConfig = getJsonConfig( path.resolve(__dirname + '/' + mappingsPath));
+		mapConfig = mapConfig.map(function(entry){
+			//do remap link to github master branch to a tag-URL (where the tag is the version number):
+			//ASSERT entry.replace ends with "tree/master/"
+			entry.replace = entry.replace.replace(/tree\/master\/$/i, 'blob/'+version+'/');
+			return entry;
+		});
+		mappingsPath = createTempFile(JSON.stringify(mapConfig));
+	}
+
+	config['sourcefile-url-map'] = mappingsPath;
+
+	// console.log(mapConfig);
+	return config;
+};
 
 var cleanJsDoc = function(callback){
 
@@ -95,14 +131,19 @@ gulp.task('gen_typedoc', function() {
 
 	var config = getJsonConfig('typedoc.json');
 
+	var mmirLibPackageJsonFile = path.resolve(getMmirPath() + '/../package.json');
+	var mmirLibPkgInfo = getJsonConfig(mmirLibPackageJsonFile);
+	var version = mmirLibPkgInfo.version;
+
 	config.out = path.normalize(tsdocOutDir);
-	config.name = 'mmir Tools and Plugins';
+	config.name = 'mmir Tools and Plugins v' + version;
+
+	prepareTypeDocUrlMapping(config, version);
 
 	return gulp
 			.src(['node_modules/mmir-*/**/*.ts'])
 			.pipe(typedoc(config));
 });
-
 
 gulp.task('gen_depsgraph', function(callback) {
 

@@ -1,14 +1,14 @@
 [
   {
-    "pattern": "^node_modules/mmir-lib/",
+    "pattern": "(/|^)(node_modules/)?mmir-lib/",
     "replace": "https://github.com/mmig/mmir-lib/tree/master/"
   },
 	{
-    "pattern": "^node_modules/mmir-tooling/",
+    "pattern": "(/|^)(node_modules/)?mmir-tooling/",
     "replace": "https://github.com/mmig/mmir-tooling/tree/master/"
   },
 	{
-    "pattern": "^node_modules/mmir-webpack/",
+    "pattern": "(/|^)(node_modules/)?mmir-webpack/",
     "replace": "https://github.com/mmig/mmir-webpack/tree/master/"
   }
 ]

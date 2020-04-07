@@ -4,3 +4,4 @@
 /api-deps-graph
 /node_modules
 /temp
+/tmp-*

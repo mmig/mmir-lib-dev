@@ -8,6 +8,5 @@
   "theme": "default",
   "listInvalidSymbolLinks": true,
   "ignoreCompilerErrors": true,
-	"sourcefile-url-map": "typedoc-sourcefile-url-map.json",
   "moduleResolution": "node"
 }
