@@ -20,6 +20,7 @@
 
 			//modified vendor libs:
 			  'mmirf/jscc': 'modified-vendor-sourcelibs/jscc-umd'
+			, 'mmirf/jison': 'modified-vendor-sourcelibs/jison'   //copied from node_modules/jison/dist/jison.js
 
 			//unmodified vendor libs
 			, 'mmirf/pegjs': 'vendor-sourcelibs/peg-0.10.0'
