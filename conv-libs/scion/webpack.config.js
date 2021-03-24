@@ -13,7 +13,10 @@ const base = {
     library: 'scionCoreLib'
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
+    fallback: {
+      util: path.resolve(__dirname, 'util-inspect-stub.js')
+    }
   },
   module: {
     rules: [
