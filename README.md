@@ -31,15 +31,14 @@ modified libraries
    (BSD; Copyright © 2007-2016 by Phorward Software Technologies; Jan Max Meyer; Brobston Development, Inc.; and other contributors)
  * PEG.js 0.10.0  
    (MIT; Copyright (c) 2010-2016 David Majda, Copyright (c) 2017+ Futago-za Ryuu)
- * Jison 0.4.15  
+ * Jison 0.4.18 (modified [mmig/jison#0.4.18-mre.1][3])  
    (MIT; Copyright (c) 2009-2014 Zachary Carter)
  * ANTLR 3  
    (BSD; Copyright (c) 2013 Terence Parr)
  * crypto-js MD5 3.1.9-1 (custom build)  
    (MIT; Copyright (c) 2009-2013 Jeff Mott, Copyright (c) 2013-2016 Evan Vosberg)
- * stacktrace-js 2.0.0  
-   (MIT; Copyright (c) 2017 Eric Wendelin and other contributors)
 
 [0]: https://github.com/mmig/mmir-lib-dev
 [1]: https://github.com/mmig/mmir-tooling
 [2]: https://github.com/mmig/mmir-lib
+[3]: https://github.com/mmig/jison/commits/0.4.18-mre.1
