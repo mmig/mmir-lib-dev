@@ -25,7 +25,6 @@
 			//unmodified vendor libs
 			, 'mmirf/pegjs': 'vendor-sourcelibs/peg-0.10.0'
 			, 'mmirf/require': 'vendor-sourcelibs/require'
-			, 'mmirf/stacktrace': 'vendor-sourcelibs/stacktrace-v2.0.0'
 		}
 	}
 
